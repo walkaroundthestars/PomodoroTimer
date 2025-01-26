@@ -1,10 +1,11 @@
 from datetime import datetime
+from pydantic import BaseModel
 
-
-class Pomodoro:
-    def __init__(self, task_title:str, start_time:datetime):
-        self.task_title = task_title
-        self.start_time = datetime.now()
+class Pomodoro(BaseModel):
+    task_id: int
+    start_time: datetime
+    end_time: datetime
+    completed: bool
 
 
 

@@ -3,18 +3,21 @@ from fastapi.params import Body
 from starlette.responses import JSONResponse
 from datetime import datetime
 from Task import Task, Status
-import Pomodoro
+from Pomodoro import Pomodoro
 app = FastAPI()
 
 
-list_of_pomodoro = [{"id":1,
-             "task_title":"FastAPI",
-             "start_time":datetime,
-             "end_time":datetime,
-             "completed":True}]
+list_of_pomodoro = []
 
-task1 = Task("first")
-list_of_tasks = [task1]
+list_of_tasks = []
+
+@app.get("/tasks")
+async def create_task(task : Task):
+    for item in list_of_tasks:
+        if item["title"] == task.title:
+            raise HTTPException(status_code=400, detail="Title must be unique.")
+    list_of_tasks.append(task.dict())
+    return list_of_tasks
 @app.get("/tasks")
 async def get_tasks():
     return list_of_tasks
