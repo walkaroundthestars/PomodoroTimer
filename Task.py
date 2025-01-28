@@ -1,5 +1,6 @@
 from enum import Enum
-from pydantic import BaseModel, Field
+
+from sqlmodel import SQLModel, Field
 from typing import Optional
 
 class Status(str, Enum):
@@ -8,9 +9,9 @@ class Status(str, Enum):
     zakonczone = "zakończone"
 
 
-class Task(BaseModel):
-    id: int
+class Task(SQLModel, table=True):
+    id: int = Field(default=None, primary_key=True)
     title: str = Field(..., min_length=3, max_length=100)
     description: Optional[str] = Field(None, max_length=300)
-    status: Status = Status.do_wykonania
+    status: Status = Field(default=Status.do_wykonania)
 
